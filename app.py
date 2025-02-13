@@ -5,6 +5,8 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.neighbors import KNeighborsClassifier
 from PIL import Image
+import requests
+from io import BytesIO
 
 # Cargar el modelo y el escalador
 modelo_knn = joblib.load('modelo_knn.bin')
@@ -63,14 +65,18 @@ elif tabs == "Predicción":
         # Mostrar el resultado de la predicción
         if prediccion == 1:
             st.write("**Diagnóstico: Tiene problema cardíaco.**")
-            # Mostrar imagen de problema cardíaco
-            imagen = Image.open("https://www.clikisalud.net/wp-content/uploads/2018/09/problemas-cardiacos-jovenes.jpg")
-            st.image(imagen, caption="Problema cardíaco", use_column_width=True)
+            # Descargar y mostrar la imagen de problema cardíaco
+            url_imagen = "https://www.clikisalud.net/wp-content/uploads/2018/09/problemas-cardiacos-jovenes.jpg"
+            respuesta = requests.get(url_imagen)
+            img = Image.open(BytesIO(respuesta.content))
+            st.image(img, caption="Problema cardíaco", use_column_width=True)
         else:
             st.write("**Diagnóstico: No tiene problema cardíaco.**")
-            # Mostrar imagen de salud
-            imagen = Image.open("https://previews.123rf.com/images/yatate10/yatate101901/yatate10190100019/125884416-el-ni%C3%B1o-sano-refleja-el-ataque-de-bacterias-estilo-de-vida-saludable.jpg")
-            st.image(imagen, caption="Salud excelente", use_column_width=True)
+            # Descargar y mostrar la imagen de salud
+            url_imagen = "https://previews.123rf.com/images/yatate10/yatate101901/yatate10190100019/125884416-el-ni%C3%B1o-sano-refleja-el-ataque-de-bacterias-estilo-de-vida-saludable.jpg"
+            respuesta = requests.get(url_imagen)
+            img = Image.open(BytesIO(respuesta.content))
+            st.image(img, caption="Salud excelente", use_column_width=True)
     else:
         st.warning("Por favor, captura los datos de entrada en la pestaña 'Capturar Datos' antes de realizar la predicción.")
 
